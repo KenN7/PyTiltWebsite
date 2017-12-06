@@ -26,7 +26,7 @@ def main():
     for d in Tilt.select().where(Tilt.name == "Red").order_by(Tilt.time.asc()):
         datalist.append((d.time,d.temp,d.gravity))
     unzipped = list(zip(*datalist))
-    print(unzipped)
+    #print(unzipped)
 
     return render_template('index.html', time=unzipped[0],  temp=unzipped[1], gravity=unzipped[2])
 
