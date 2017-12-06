@@ -44,7 +44,7 @@ def monitor_tilt():
             if beacon['uuid'] in TILTS.keys():
                 print beacon['uuid'],to_celsius(beacon['major']),beacon['minor']
                 r = Tilt(name=TILTS[beacon['uuid']], time=datetime.now(), temp=to_celsius(beacon['major']), gravity=beacon['minor'])
-                r.save
+                r.save()
                 # sender.add_data({
                 #     'color': TILTS[beacon['uuid']],
                 #     'timestamp': datetime.datetime.now().isoformat(),
