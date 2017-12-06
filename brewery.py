@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route('/')
 def main():
     datalist = []
-    for d in Tilt.select().where(Tilt.name == "black").order_by(Tilt.time.asc()):
+    for d in Tilt.select().where(Tilt.name == "Red").order_by(Tilt.time.asc()):
         datalist.append((d.time,d.temp,d.gravity))
     unzipped = list(zip(*datalist))
     print(unzipped)
