@@ -42,6 +42,7 @@ def monitor_tilt():
         beacons = distinct(blescan.parse_events(sock, 10))
         for beacon in beacons:
             if beacon['uuid'] in TILTS.keys():
+                print beacon['uuid'],to_celsius(beacon['major']),beacon['minor']
                 r = Tilt(name=TILTS[beacon['uuid']], time=datetime.now(), temp=to_celsius(beacon['major']), gravity=beacon['minor'])
                 r.save
                 # sender.add_data({
