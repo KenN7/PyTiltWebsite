@@ -42,7 +42,7 @@ def monitor_tilt():
         beacons = distinct(blescan.parse_events(sock, 10))
         for beacon in beacons:
             if beacon['uuid'] in TILTS.keys():
-                print beacon['uuid'],to_celsius(beacon['major']),beacon['minor']
+                print(beacon['uuid'],to_celsius(beacon['major']),beacon['minor'])
                 r = Tilt(name=TILTS[beacon['uuid']], time=datetime.now(), temp=to_celsius(beacon['major']), gravity=beacon['minor'])
                 r.save()
                 # sender.add_data({
@@ -59,9 +59,9 @@ if __name__ == '__main__':
     dev_id = 0
     try:
         sock = bluez.hci_open_dev(dev_id)
-        print 'Starting pytilt logger'
+        print('Starting pytilt logger')
     except:
-        print 'error accessing bluetooth device...'
+        print('error accessing bluetooth device...')
         sys.exit(1)
 
     blescan.hci_le_set_scan_parameters(sock)
