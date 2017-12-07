@@ -1,6 +1,6 @@
 from peewee import *
 
-db = SqliteDatabase('datatilt.db')
+db = SqliteDatabase('/home/pi/pytilt/datatilt.db')
 
 class Tilt(Model):
     name = CharField()
