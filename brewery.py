@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # flask app to handle connected brewery
 #import os
 from flask import Flask, request, redirect, url_for, render_template
@@ -12,7 +13,6 @@ app = Flask(__name__)
 @app.before_request
 def _db_connect():
     db.connect()
-
 # This hook ensures that the connection is closed when we've finished
 # processing the request.
 @app.teardown_request
