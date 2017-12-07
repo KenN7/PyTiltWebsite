@@ -28,11 +28,11 @@ def main():
         #print(request.args)
         d1 = datetime.strptime(request.args['begindate'], '%Y-%m-%d')
         d2 = datetime.strptime(request.args['enddate'], '%Y-%m-%d')
-        for d in Tilt.select().where(Tilt.time > d1).where(Tilt.time < d2).order_by(Tilt.time.asc()):
-            datalist.append((d.time,d.temp,d.gravity))
+        for d in Tilt.select().where(Tilt.time > d1).where(Tilt.time <= d2).order_by(Tilt.time.asc()):
+            datalist.append((d.time.timestamp(),d.temp,d.gravity))
     else:
         for d in Tilt.select().order_by(Tilt.time.asc()):
-            datalist.append((d.time,d.temp,d.gravity))
+            datalist.append((d.time.timestamp(),d.temp,d.gravity))
 
     #print(datalist)
     if datalist == []:
