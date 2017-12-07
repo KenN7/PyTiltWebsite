@@ -8,6 +8,7 @@ Type=idle
 ## Environment=PYTILT_KEY=YOUR_KEY
 ## ExecStart=/usr/bin/python /home/atlefren/pytilt/pytilt.py > /home/atlefren/pytilt.log 2>&1
 ExecStart=/usr/bin/python2 /home/pi/pytilt/pytilt.py
+User=pi
 
 [Install]
 WantedBy=multi-user.target
