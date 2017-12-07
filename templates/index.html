@@ -15,8 +15,27 @@
 <canvas id="chart" width="600" height="400"></canvas>
 <canvas id="chart2" width="600" height="400"></canvas>
 
+<form>
+    <div>
+        <label for="begin">Date de début</label>
+        <input id="begin" type="date" name="begindate" required>
+        <span class="validity"></span>
+    </div>
+    <div>
+        <label for="end">Date de fin</label>
+        <input id="end" type="date" name="enddate" required>
+        <span class="validity"></span>
+    </div>
+    <div>
+        <input type="submit" value="Afficher">
+    </div>
+</form>
+
 <script>
    // bar chart data
+   {% if time %}
+   {% if temp %}
+   {% if gravity %}
    var linedata = {
    labels : [{% for item in time %}
                   "{{item}}",
@@ -48,7 +67,9 @@
         }
     ]
    }
-
+   {% endif %}
+   {% endif %}
+   {% endif %}
 
    // get bar chart canvas
    var mychart = document.getElementById("chart").getContext("2d");

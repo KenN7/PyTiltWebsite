@@ -20,14 +20,26 @@ def _db_close(exc):
     if not db.is_closed():
         db.close()
 
+
 @app.route('/')
 def main():
     datalist = []
-    for d in Tilt.select().where(Tilt.name == "Red").order_by(Tilt.time.asc()):
-        datalist.append((d.time,d.temp,d.gravity))
+    if request.args:
+        #print(request.args)
+        d1 = datetime.strptime(request.args['begindate'], '%Y-%m-%d')
+        d2 = datetime.strptime(request.args['enddate'], '%Y-%m-%d')
+        for d in Tilt.select().where(Tilt.time > d1).where(Tilt.time < d2).order_by(Tilt.time.asc()):
+            datalist.append((d.time,d.temp,d.gravity))
+    else:
+        for d in Tilt.select().order_by(Tilt.time.asc()):
+            datalist.append((d.time,d.temp,d.gravity))
+
+    #print(datalist)
+    if datalist == []:
+        return render_template('index.html')
+
     unzipped = list(zip(*datalist))
     #print(unzipped)
-
     return render_template('index.html', time=unzipped[0],  temp=unzipped[1], gravity=unzipped[2])
 
     #     datag.append((d.time,d.gravity))
