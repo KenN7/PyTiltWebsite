@@ -32,7 +32,8 @@ def main():
         d1 = datetime.strptime(request.args['begindate'], '%Y-%m-%d')
         d2 = datetime.strptime(request.args['enddate'], '%Y-%m-%d')
 
-        period = Tilt.select().where(Tilt.time > d1).where(Tilt.time <= d2).order_by(Tilt.time.asc()) #this actually takes time
+        #period = Tilt.select().where(Tilt.time > d1).where(Tilt.time <= d2).order_by(Tilt.time.asc()) #this actually takes time
+        period = Tilt.select().where(Tilt.time > d1).where(Tilt.time <= d2) #this actually takes time
         res = int(len(period)/max_points)
 
         origgravity = mean([d.gravity for d in period[:100]])/1000
@@ -47,8 +48,11 @@ def main():
         real_ext = 0.1808 * platoOG + 0.8192 * platoFG
         real_att = (1 - real_ext / platoOG)*100
 
+        i=0
         for d in period[::res]:
-            datalist.append((d.time.timestamp(),d.temp,d.gravity))
+            datalist.append((d.time.timestamp(),mean([d.temp for d in period[i:i+res]]),mean([d.gravity for d in period[i:i+res]])))
+            i+=res
+            #datalist.append((d.time.timestamp(),d.temp,d.gravity))
     else:
         period =  Tilt.select()
         res = int(len(period)/max_points)
