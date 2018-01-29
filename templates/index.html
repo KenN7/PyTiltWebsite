@@ -4,8 +4,10 @@
 <meta charset="utf-8" />
 <title>Chart.js</title>
 
-<script src='static/moment.js'></script>
-<script src='static/Chart.min.js'></script>
+<script type="text/javascript" src='static/moment.js'></script>
+<script type="text/javascript" src='static/Chart.min.js'></script>
+<script type="text/javascript" src="/static/libgif.js"></script>
+<script type="text/javascript" src="/static/airlocksse.js"></script>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 
 </head>
@@ -18,6 +20,7 @@
 <div style="width:600px;">
 <canvas id="chart2"></canvas>
 </div>
+<div>
 
 
 <form>
@@ -45,6 +48,10 @@
     </div>
     {% endif %}
 </form>
+
+<img id="example1" rel:animated_src="/static/airlock2.gif" rel:auto_play="0" />
+</div>
+<div id=event></div>
 
 <script>
     // bar chart data
