@@ -10,3 +10,8 @@ class Tilt(Model):
 
     class Meta:
         database = db # This model uses the "datatilt.db" database.
+
+
+def initdb():
+    db.connect()
+    db.create_tables([Tilt], safe=True)
