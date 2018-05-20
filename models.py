@@ -11,7 +11,16 @@ class Tilt(Model):
     class Meta:
         database = db # This model uses the "datatilt.db" database.
 
+class Bubbler(Model):
+    name = CharField()
+    starttime = DateTimeField()
+    endtime = DateTimeField()
+    bubbles = IntegerField()
+
+    class Meta:
+        database = db
+
 
 def initdb():
     db.connect()
-    db.create_tables([Tilt], safe=True)
+    db.create_tables([Tilt, Bubbler], safe=True)
