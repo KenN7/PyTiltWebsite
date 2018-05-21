@@ -39,14 +39,13 @@ class Bubbler:
         if (bubble == 0):
             self.lastbubble = datetime.now()
             self.firstbubble = datetime.now()
-        if datetime.now() - self.lastbubble < timedelta(0, 10) :
+        if (datetime.now() - self.lastbubble < timedelta(0, 20)):
             self.bubble += 1
         else:
             self.q.put(models.Bubbler(name="0", starttime=self.firstbubble, endtime=datetime.now(), bubbles=self.bubble))
             # r = models.Bubbler(name=0, starttime=self.firstbubble, endtime=datetime.now(), bubbles=self.bubble)
             # r.save()
             self.bubble = 0 #save and send data
-
         self.lastbubble = datetime.now()
 
 
@@ -73,7 +72,6 @@ class Tilt:
             if beacon['uuid'] in TILTS.keys():
                 print(beacon['uuid'],to_celsius(beacon['major']),beacon['minor'])
                 self.q.put(models.Tilt(name=TILTS[beacon['uuid']], time=datetime.now(), temp=to_celsius(beacon['major']), gravity=beacon['minor']))
-
                 # r = models.Tilt(name=TILTS[beacon['uuid']], time=datetime.now(), temp=to_celsius(beacon['major']), gravity=beacon['minor'])
                 # r.save()
                 # sender.add_data({
