@@ -4,11 +4,11 @@ from datetime import datetime
 from flask import Flask,request,jsonify
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS
-from marshmallow import Schema, fields, post_load
 #from bs4 import BeautifulSoup
+from models import TiltSchema, BubblerSchema
 
-#import models
-import models_test as models
+import models
+#import models_test as models
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -17,16 +17,6 @@ api = Api(app)
 
 parser = reqparse.RequestParser()
 parser.add_argument('X-PYTILT-KEY', location='headers')
-
-class TesterSchema(Schema):
-    name = fields.Str()
-    #starttime = fields.DateTime()
-    #endtime = fields.DateTime()
-    idt = fields.Int()
-
-    @post_load
-    def make_bubble(self, data):
-        return models.Test(**data)
 
 
 class TestPut(Resource):
@@ -52,8 +42,6 @@ class TestPut(Resource):
         return 200
         #print(args)
 
-
-
 class Tilt(Resource):
     def get(self, begindate, enddate):
         d1 = datetime.strptime(begindate, '%Y-%m-%d')
@@ -63,7 +51,18 @@ class Tilt(Resource):
 
 class TiltPut(Resource):
     def post(self):
-        pass
+        schema = TiltSchema(many=True)
+        user_data = request.get_json()
+        print('uD: ', user_data)
+        res = schema.load(user_data)
+        print("-----")
+        print(res)
+        print("-----")
+        for r in res.data:
+            r.save()
+        print(request.headers)
+        return 200
+        #print(args)
 
 class Bubbler(Resource):
     def get(self, begindate, enddate):
@@ -74,7 +73,18 @@ class Bubbler(Resource):
 
 class BubblerPut(Resource):
     def post(self):
-        pass
+        schema = BubblerSchema(many=True)
+        user_data = request.get_json()
+        res = schema.load(user_data)
+        print("-----")
+        print(user_data)
+        print(res)
+        print("-----")
+        for r in res.data:
+            r.save()
+        print(request.headers)
+        return 200
+        #print(args)
 
 
 api.add_resource(Tilt, '/tilt/<begindate>/<enddate>')

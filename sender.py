@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 import requests
 import json
 from multiprocessing import Pool
@@ -7,7 +8,7 @@ import os
 
 
 def send(data, url, key):
-    print 'send', data
+    print('send ', data)
     try:
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain', 'X-PYTILT-KEY': key}
         r = requests.post(url, data=json.dumps(data), headers=headers)
@@ -17,17 +18,20 @@ def send(data, url, key):
 
 
 class Sender(object):
-
-    def __init__(self, batch_size=1):
+    def __init__(self, endpoint, batch_size=1):
         self.queue = []
         self.sending = []
         self.batch_size = batch_size
-        self.url = os.environ.get('PYTILT_URL', None)
-        self.key = os.environ.get('PYTILT_KEY', None)
+        #self.url = os.environ.get('PYTILT_URL', None)
+        #self.key = os.environ.get('PYTILT_KEY', None)
+        self.key = '1234'
+        self.url = 'http://127.0.0.1:5000/{}'.format(endpoint)
+        print("sending to {} with key {}".format(self.url,self.key))
 
     def add_data(self, data):
         self.queue.append(data)
         if len(self.queue) >= self.batch_size:
+            print('Reached max len, sending batch')
             self.send()
 
     def send(self):
@@ -42,7 +46,7 @@ class Sender(object):
         if was_sent:
             self.sending = []
         else:
-            print 'send failed'
+            print('send failed')
             if len(self.queue) > 100:
                 self.queue = []
             self.queue += self.sending

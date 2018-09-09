@@ -29,14 +29,14 @@ class Bubbler:
     def __init__(self, pin, queue):
         self.pin = pin
         self.bubbler = Button(pin)
-        self.bubbler.when_pressed = self.bubble()
+        self.bubbler.when_pressed = self.DoBubble()
         self.lastbubble = datetime.now()
         self.firstbubble = datetime.now()
         self.bubble = 0
         self.q = queue
 
-    def bubble(self):
-        if (bubble == 0):
+    def DoBubble(self):
+        if (self.bubble == 0):
             self.lastbubble = datetime.now()
             self.firstbubble = datetime.now()
         if (datetime.now() - self.lastbubble < timedelta(0, 20)):
@@ -70,8 +70,8 @@ class Tilt:
         beacons = self.distinct(blescan.parse_events(sock, 10))
         for beacon in beacons:
             if beacon['uuid'] in TILTS.keys():
-                print(beacon['uuid'],to_celsius(beacon['major']),beacon['minor'])
-                self.q.put(models.Tilt(name=TILTS[beacon['uuid']], time=datetime.now(), temp=to_celsius(beacon['major']), gravity=beacon['minor']))
+                print(beacon['uuid'],self.to_celsius(beacon['major']),beacon['minor'])
+                self.q.put(models.Tilt(name=TILTS[beacon['uuid']], time=datetime.now(), temp=self.to_celsius(beacon['major']), gravity=beacon['minor']))
                 # r = models.Tilt(name=TILTS[beacon['uuid']], time=datetime.now(), temp=to_celsius(beacon['major']), gravity=beacon['minor'])
                 # r.save()
                 # sender.add_data({
