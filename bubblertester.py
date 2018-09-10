@@ -1,8 +1,6 @@
 #!/usr/bin/python3
-
 import threading
 import socket
-
 
 if __name__ == '__main__':
 
