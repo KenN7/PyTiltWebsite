@@ -5,7 +5,11 @@ from marshmallow import Schema, fields, post_load, pre_dump, utils
 
 from classes.sender import Sender
 
-db = SqliteDatabase('datatilt.db')
+db = SqliteDatabase('datatilt.db', pragmas={
+    'journal_mode': 'wal',
+    'cache_size': -1024 * 64,  # 10000 pages, or ~40MB
+    'foreign_keys': 1,  # Enforce foreign-key constraints
+})
 
 class Tilt:
     def __init__(self, name, time, temp, gravity):
@@ -99,4 +103,9 @@ def initdb():
     db.create_tables([TiltDB, BubblerDB], safe=True)
 
 if __name__ == '__main__':
+    # Read the value of several pragmas:
     initdb()
+    print('cache_size:', db.cache_size)
+    print('foreign_keys:', db.foreign_keys)
+    print('journal_mode:', db.journal_mode)
+    print('page_size:', db.page_size)
