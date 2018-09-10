@@ -1,21 +1,31 @@
 #!/usr/bin/python3
 from datetime import datetime
+from functools import wraps
 
-from flask import Flask,request,jsonify
-from flask_restful import Resource, Api, reqparse
+from flask import Flask,request,jsonify,abort
+from flask_restful import Resource, Api
 from flask_cors import CORS
 #from bs4 import BeautifulSoup
 from classes.models import TiltSchema, BubblerSchema
 
-import classes.models
+import classes.models as models
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 api = Api(app)
+#parser = reqparse.RequestParser()
+#parser.add_argument('X-PYTILT-KEY', location='headers')
 
-parser = reqparse.RequestParser()
-parser.add_argument('X-PYTILT-KEY', location='headers')
+def check_apikey(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if (request.headers.get('X-PYTILT-KEY', None) == '1234'):
+            return f(*args, **kwargs)
+        else:
+            return abort(401) 
+    return wrapper
+
 
 class Tilt(Resource):
     def get(self, begindate, enddate):
@@ -25,6 +35,7 @@ class Tilt(Resource):
         return period
 
 class TiltPut(Resource):
+    method_decorators = [check_apikey]
     def post(self):
         schema = TiltSchema(many=True)
         user_data = request.get_json()
@@ -47,6 +58,7 @@ class Bubbler(Resource):
         return jsondata
 
 class BubblerPut(Resource):
+    method_decorators = [check_apikey]
     def post(self):
         schema = BubblerSchema(many=True)
         user_data = request.get_json()
