@@ -28,14 +28,15 @@ def check_apikey(f):
 
 
 class Tilt(Resource):
-    def get(self, begindate, enddate):
+    method_decorators = [check_apikey]
+    def get(self, begindate=None, enddate=None):
         d1 = datetime.strptime(begindate, '%Y-%m-%d')
         d2 = datetime.strptime(enddate, '%Y-%m-%d')
-        period = models.Tilt.select().where(Tilt.time > d1).where(Tilt.time <= d2)
-        return period
+        period = models.TiltDB.select().where(models.TiltDB.time > d1).where(models.TiltDB.time <= d2)
+        schema = TiltSchema(many=True)
+        items,e = schema.dump(list(period))
+        return jsonify(items)
 
-class TiltPut(Resource):
-    method_decorators = [check_apikey]
     def post(self):
         schema = TiltSchema(many=True)
         user_data = request.get_json()
@@ -51,14 +52,16 @@ class TiltPut(Resource):
         #print(args)
 
 class Bubbler(Resource):
+    method_decorators = [check_apikey]
     def get(self, begindate, enddate):
         d1 = datetime.strptime(begindate, '%Y-%m-%d')
         d2 = datetime.strptime(enddate, '%Y-%m-%d')
-        period = models.Tilt.select().where(Tilt.time > d1).where(Tilt.time <= d2)
-        return jsondata
+        period = models.BubblerDB.select().where(models.BubblerDB.starttime > d1).where(models.BubblerDB.starttime <= d2)
+        schema = BubblerSchema(many=True)
+        items,e = schema.dump(list(period))
+        print(e)
+        return jsonify(items)
 
-class BubblerPut(Resource):
-    method_decorators = [check_apikey]
     def post(self):
         schema = BubblerSchema(many=True)
         user_data = request.get_json()
@@ -74,10 +77,8 @@ class BubblerPut(Resource):
         #print(args)
 
 
-api.add_resource(Tilt, '/tilt/<begindate>/<enddate>')
-api.add_resource(TiltPut, '/tilt')
-api.add_resource(Bubbler, '/bubbler/<begindate>/<enddate>')
-api.add_resource(BubblerPut, '/bubbler')
+api.add_resource(Tilt, '/tilt/<begindate>/<enddate>', '/tilt')
+api.add_resource(Bubbler, '/bubbler/<begindate>/<enddate>', '/bubbler')
 
 
 if __name__ == '__main__':
