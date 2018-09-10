@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from __future__ import absolute_import
 from peewee import *
-from marshmallow import Schema, fields, post_load
+from marshmallow import Schema, fields, post_load, pre_dump, utils
 
 from classes.sender import Sender
 
@@ -40,6 +40,14 @@ class TiltSchema(Schema):
     def make_tilt(self, data):
         return TiltDB(**data)
 
+    @pre_dump(pass_many=True)
+    def rewrite_datetime(self, data, many):
+        if many:
+            for d in data:
+                d.time = utils.from_iso(d.time)
+        else:
+            data.time = utils.from_iso(data.time)
+
 
 class Bubbler:
     def __init__(self, name, starttime, endtime, bubbles):
@@ -74,6 +82,16 @@ class BubblerSchema(Schema):
     @post_load
     def make_bubble(self, data):
         return BubblerDB(**data)
+
+    @pre_dump(pass_many=True)
+    def rewrite_datetime(self, data, many):
+        if many:
+            for d in data:
+                d.starttime = utils.from_iso(d.starttime)
+                d.endtime = utils.from_iso(d.endtime)
+        else:
+            data.starttime = utils.from_iso(data.starttime)
+            data.endtime = utils.from_iso(data.endtime)
 
 
 def initdb():

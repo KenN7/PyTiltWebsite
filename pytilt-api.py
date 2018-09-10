@@ -23,7 +23,7 @@ def check_apikey(f):
         if (request.headers.get('X-PYTILT-KEY', None) == '1234'):
             return f(*args, **kwargs)
         else:
-            return abort(401) 
+            return abort(401)
     return wrapper
 
 
@@ -59,7 +59,7 @@ class Bubbler(Resource):
         period = models.BubblerDB.select().where(models.BubblerDB.starttime > d1).where(models.BubblerDB.starttime <= d2)
         schema = BubblerSchema(many=True)
         items,e = schema.dump(list(period))
-        print(e)
+        #print(e)
         return jsonify(items)
 
     def post(self):
