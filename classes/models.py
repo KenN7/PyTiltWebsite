@@ -7,7 +7,7 @@ from classes.sender import Sender
 
 db = SqliteDatabase('datatilt.db', pragmas={
     'journal_mode': 'wal',
-    'cache_size': -1024 * 64,  # 10000 pages, or ~40MB
+    'cache_size': -1024 * 64,  # 64MB
     'foreign_keys': 1,  # Enforce foreign-key constraints
 })
 
@@ -28,7 +28,7 @@ class TiltDB(Model):
     temp = FloatField()
     gravity = FloatField()
 
-    def __str__(self):
+    def __repr__(self):
         return "{}:{}:{}".format(self.name,self.time,self.gravity)
 
     class Meta:
@@ -61,7 +61,7 @@ class Bubbler:
     def get_dict(self):
         return self.schema.dump(self.dbitem).data
 
-    def __str__(self):
+    def __repr__(self):
         return "{}:{}:{}".format(self.name,self.starttime,self.bubbles)
 
 
