@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 from peewee import *
 from marshmallow import Schema, fields, post_load, pre_dump, utils
+import datetime
 
 from classes.sender import Sender
 
@@ -11,24 +12,13 @@ db = SqliteDatabase('datatilt.db', pragmas={
     'foreign_keys': 1,  # Enforce foreign-key constraints
 })
 
-class Tilt:
-    def __init__(self, name, time, temp, gravity):
-        self.dbitem = TiltDB(name=name, time=time, temp=temp, gravity=gravity)
-        self.schema = TiltSchema()
-
-    def get_dict(self):
-        return self.schema.dump(self.dbitem).data
-
-    def __str__(self):
-        return "{}:{}:{}".format(self.name,self.time,self.gravity)
-
-class TiltDB(Model):
+class Tilt(Model):
     name = CharField()
     time = DateTimeField()
     temp = FloatField()
     gravity = FloatField()
 
-    def __repr__(self):
+    def __str__(self):
         return "{}:{}:{}".format(self.name,self.time,self.gravity)
 
     class Meta:
@@ -42,30 +32,19 @@ class TiltSchema(Schema):
 
     @post_load
     def make_tilt(self, data):
-        return TiltDB(**data)
+        return Tilt(**data)
 
     @pre_dump(pass_many=True)
     def rewrite_datetime(self, data, many):
         if many:
             for d in data:
-                d.time = utils.from_iso(d.time)
-        else:
-            data.time = utils.from_iso(data.time)
+                if type(d.time) is not datetime.datetime:
+                    d.time = utils.from_iso(d.time)
+        elif type(data.time) is not datetime.datetime:
+                data.time = utils.from_iso(data.time)
 
 
-class Bubbler:
-    def __init__(self, name, starttime, endtime, bubbles):
-        self.dbitem = BubblerDB(name=name, starttime=starttime, endtime=endtime, bubbles=bubbles)
-        self.schema = BubblerSchema()
-
-    def get_dict(self):
-        return self.schema.dump(self.dbitem).data
-
-    def __repr__(self):
-        return "{}:{}:{}".format(self.name,self.starttime,self.bubbles)
-
-
-class BubblerDB(Model):
+class Bubbler(Model):
     name = CharField()
     starttime = DateTimeField()
     endtime = DateTimeField()
@@ -85,22 +64,25 @@ class BubblerSchema(Schema):
 
     @post_load
     def make_bubble(self, data):
-        return BubblerDB(**data)
+        return Bubbler(**data)
 
     @pre_dump(pass_many=True)
     def rewrite_datetime(self, data, many):
         if many:
             for d in data:
-                d.starttime = utils.from_iso(d.starttime)
-                d.endtime = utils.from_iso(d.endtime)
-        else:
+                if type(d.starttime) is not datetime.datetime:
+                    d.starttime = utils.from_iso(d.starttime)
+                if type(d.endtime) is not datetime.datetime:
+                    d.endtime = utils.from_iso(d.endtime)
+        elif type(data.starttime) is not datetime.datetime:
             data.starttime = utils.from_iso(data.starttime)
+        elif type(data.endtime) is not datetime.datetime:
             data.endtime = utils.from_iso(data.endtime)
 
 
 def initdb():
     db.connect()
-    db.create_tables([TiltDB, BubblerDB], safe=True)
+    db.create_tables([Tilt, Bubbler], safe=True)
 
 if __name__ == '__main__':
     # Read the value of several pragmas:

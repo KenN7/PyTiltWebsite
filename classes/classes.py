@@ -25,28 +25,28 @@ class BubblerBase(object):
         self.bubble = 0
 
         self.sender = Sender('bubbler',2)
+        self.schema = models.BubblerSchema()
 
     def DoBubble(self):
         if (self.bubble == 0):
             self.lastbubble = datetime.now()
             self.firstbubble = datetime.now()
         self.bubble += 1
-        #print('bb nb:', self.bubble)
         self.lastbubble = datetime.now()
 
     def monitor(self):
         if ( self.bubble > 0 ):
             m = models.Bubbler(name="0", starttime=self.firstbubble, endtime=datetime.now(), bubbles=self.bubble)
-            self.sender.add_data(m.get_dict())
+            self.sender.add_data(self.schema.dump(m).data)
             self.bubble = 0
             #print('put in q')
-
 
 
 class TiltBase(object):
     def __init__(self, name):
         self.name = name
         self.sender = Sender('tilt',2)
+        self.schema = models.TiltSchema()
 
     def distinct(self, objects):
         seen = set()
@@ -69,4 +69,4 @@ class TiltBase(object):
             if beacon['uuid'] in TILTS.keys():
                 print(beacon['uuid'],self.to_celsius(beacon['major']),beacon['minor'])
                 m = models.Tilt(name=TILTS[beacon['uuid']], time=datetime.now(), temp=self.to_celsius(beacon['major']), gravity=beacon['minor'])
-                self.sender.add_data(m.get_dict())#, self.schema.dump(m).data))
+                self.sender.add_data(self.schema.dump(m).data)

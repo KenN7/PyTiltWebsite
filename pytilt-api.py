@@ -32,7 +32,7 @@ class Tilt(Resource):
     def get(self, begindate=None, enddate=None):
         d1 = datetime.strptime(begindate, '%Y-%m-%d')
         d2 = datetime.strptime(enddate, '%Y-%m-%d')
-        period = models.TiltDB.select().where(models.TiltDB.time > d1).where(models.TiltDB.time <= d2)
+        period = models.Tilt.select().where(models.Tilt.time > d1).where(models.Tilt.time <= d2)
         schema = TiltSchema(many=True)
         items,e = schema.dump(list(period))
         return jsonify(items)
@@ -56,7 +56,7 @@ class Bubbler(Resource):
     def get(self, begindate, enddate):
         d1 = datetime.strptime(begindate, '%Y-%m-%d')
         d2 = datetime.strptime(enddate, '%Y-%m-%d')
-        period = models.BubblerDB.select().where(models.BubblerDB.starttime > d1).where(models.BubblerDB.starttime <= d2)
+        period = models.Bubbler.select().where(models.Bubbler.starttime > d1).where(models.Bubbler.starttime <= d2)
         schema = BubblerSchema(many=True)
         items,e = schema.dump(list(period))
         #print(e)

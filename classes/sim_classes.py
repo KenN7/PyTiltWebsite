@@ -17,16 +17,18 @@ class BubblerSim(BubblerBase):
         PORT = 3999
         s = socket.socket()
         s.bind((HOST,PORT))
-
         s.listen(5)
         while True:
             c, a = s.accept()
-            msg = str(c.recv(1024))
-            c.send(bytes('GOT: {0}'.format(msg)))
+            msg = str(c.recv(1024).decode('utf8'))
+            c.send( bytearray('GOT: {0}'.format(msg),'utf8') )
             c.close()
+            print(msg, type(msg), 'bbbb', type('bbbb'))
             if msg=="bbbb":
                 print('do bubble')
                 self.DoBubble()
+        s.shutdown()
+        s.close()
 
 
 class TiltSim(TiltBase):
