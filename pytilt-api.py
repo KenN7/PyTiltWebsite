@@ -7,15 +7,12 @@ from flask_restful import Resource, Api
 from flask_cors import CORS
 #from bs4 import BeautifulSoup
 from classes.models import TiltSchema, BubblerSchema
-
 import classes.models as models
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 api = Api(app)
-#parser = reqparse.RequestParser()
-#parser.add_argument('X-PYTILT-KEY', location='headers')
 
 def check_apikey(f):
     @wraps(f)
@@ -75,7 +72,6 @@ class Bubbler(Resource):
         print(request.headers)
         return 200
         #print(args)
-
 
 api.add_resource(Tilt, '/tilt/<begindate>/<enddate>', '/tilt')
 api.add_resource(Bubbler, '/bubbler/<begindate>/<enddate>', '/bubbler')
