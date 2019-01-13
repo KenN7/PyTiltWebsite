@@ -12,6 +12,26 @@ db = SqliteDatabase('datatilt.db', pragmas={
     'foreign_keys': 1,  # Enforce foreign-key constraints
 })
 
+dbbeer = SqliteDatabase('databeers.db', pragmas={
+    'journal_mode': 'wal',
+    'cache_size': -1024 * 64,  # 64MB
+    'foreign_keys': 1,  # Enforce foreign-key constraints
+})
+
+class Beer(Model):
+    name = CharField()
+    comment = CharField()
+    begin = DateTimeField()
+    end = DateTimeField()
+    bflink = CharField()
+
+    def __str__(self):
+        return "{}".format(self.name)
+
+    class Meta:
+        database = dbbeer # This model uses the "datatilt.db" database.
+
+
 class Tilt(Model):
     name = CharField()
     time = DateTimeField()
@@ -83,6 +103,8 @@ class BubblerSchema(Schema):
 def initdb():
     db.connect()
     db.create_tables([Tilt, Bubbler], safe=True)
+    dbbeer.connect()
+    dbbeer.create_tables([Beer], safe=True)
 
 if __name__ == '__main__':
     # Read the value of several pragmas:

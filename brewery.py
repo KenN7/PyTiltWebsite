@@ -3,7 +3,7 @@
 #import os
 from flask import Flask, request, redirect, url_for, render_template
 #from werkzeug.utils import secure_filename
-from models import *
+from classes.models import *
 from datetime import datetime
 from statistics import mean
 
