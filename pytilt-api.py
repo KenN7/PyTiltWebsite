@@ -9,10 +9,15 @@ from flask_cors import CORS
 from classes.models import TiltSchema, BubblerSchema
 import classes.models as models
 
+from classes.influxmodels import Influxdb,jsonBubbler,jsonTilt
+
+
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 api = Api(app)
+
+influxdb = Influxdb("localhost", 8086)
 
 def check_apikey(f):
     @wraps(f)
@@ -37,13 +42,14 @@ class Tilt(Resource):
     def post(self):
         schema = TiltSchema(many=True)
         user_data = request.get_json()
-        print('uD: ', user_data)
-        res = schema.load(user_data)
+        #res = schema.load(user_data)
+        print("--- ud ---")
+        print(user_data)
+        #print(res)
         print("-----")
-        print(res)
-        print("-----")
-        for r in res.data:
-            r.save()
+        influxdb.connect_write('hoplab',jsonTilt(user_data))
+        #for r in res.data:
+        #    r.save()
         print(request.headers)
         return 200
         #print(args)
@@ -62,13 +68,15 @@ class Bubbler(Resource):
     def post(self):
         schema = BubblerSchema(many=True)
         user_data = request.get_json()
-        res = schema.load(user_data)
-        print("-----")
+        #res = schema.load(user_data)
+        print("--- ud ---")
         print(user_data)
-        print(res)
+        #print(res)
         print("-----")
-        for r in res.data:
-            r.save()
+
+        influxdb.connect_write('hoplab',jsonBubbler(user_data))
+        #for r in res.data:
+        #    r.save()
         print(request.headers)
         return 200
         #print(args)

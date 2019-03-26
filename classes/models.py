@@ -4,7 +4,6 @@ from peewee import *
 from marshmallow import Schema, fields, post_load, pre_dump, utils
 import datetime
 
-from classes.sender import Sender
 
 db = SqliteDatabase('datatilt.db', pragmas={
     'journal_mode': 'wal',

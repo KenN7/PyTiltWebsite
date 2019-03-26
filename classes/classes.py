@@ -20,8 +20,8 @@ TILTS = {
 class BubblerBase(object):
     def __init__(self, pin):
         self.pin = pin
-        self.lastbubble = datetime.now()
-        self.firstbubble = datetime.now()
+        self.lastbubble = datetime.utcnow()
+        self.firstbubble = datetime.utcnow()
         self.bubble = 0
 
         self.sender = Sender('bubbler',2)
@@ -29,14 +29,14 @@ class BubblerBase(object):
 
     def DoBubble(self):
         if (self.bubble == 0):
-            self.lastbubble = datetime.now()
-            self.firstbubble = datetime.now()
+            self.lastbubble = datetime.utcnow()
+            self.firstbubble = datetime.utcnow()
         self.bubble += 1
-        self.lastbubble = datetime.now()
+        self.lastbubble = datetime.utcnow()
 
     def monitor(self):
         if ( self.bubble > 0 ):
-            m = models.Bubbler(name="0", starttime=self.firstbubble, endtime=datetime.now(), bubbles=self.bubble)
+            m = models.Bubbler(name="0", starttime=self.firstbubble, endtime=datetime.utcnow(), bubbles=self.bubble)
             self.sender.add_data(self.schema.dump(m).data)
             self.bubble = 0
             #print('put in q')
@@ -68,5 +68,5 @@ class TiltBase(object):
         for beacon in beacons:
             if beacon['uuid'] in TILTS.keys():
                 print(beacon['uuid'],self.to_celsius(beacon['major']),beacon['minor'])
-                m = models.Tilt(name=TILTS[beacon['uuid']], time=datetime.now(), temp=self.to_celsius(beacon['major']), gravity=beacon['minor'])
+                m = models.Tilt(name=TILTS[beacon['uuid']], time=datetime.utcnow(), temp=self.to_celsius(beacon['major']), gravity=beacon['minor'])
                 self.sender.add_data(self.schema.dump(m).data)
