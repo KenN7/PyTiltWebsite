@@ -14,7 +14,7 @@ services:
             - ${DATA_ROOT_DIR:-/srv/data}:/var/lib/influxdb
 
     grafana:
-        image: grafana:latest
+        image: grafana/grafana:latest
         restart: unless-stopped
         ports:
             - "3000:3000"
