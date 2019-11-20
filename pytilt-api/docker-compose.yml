@@ -1,0 +1,42 @@
+version '3'
+
+networks:
+    web:
+        external: true
+
+services:
+    influxdb:
+        image: influxdb:1.7-alpine
+        restart: unless-stopped
+        env_file:
+            - .env
+        volumes:
+            - ${DATA_ROOT_DIR:-/srv/data}:/var/lib/influxdb
+
+    grafana:
+        image: grafana:latest
+        restart: unless-stopped
+        ports:
+            - "3000:3000"
+        volumes:
+            - ${DATA_ROOT_DIR:-/srv/data}:/var/lib/grafana
+        labels:
+            traefik.enable: "true"
+            traefik.port: "3000"
+            traefik.frontend.rule: "Host: grafana.kenh.fr, grafana.ananas.space"
+        networks:
+            - web
+
+    api:
+        build: .
+        restart: unless-stopped
+        ports:
+            - "1234:1234"
+        env_file:
+            - .env
+        labels:
+            traefik.enable: "true"
+            traefik.port: "1234"
+            traefik.frontend.rule: "Host: tiltapi.kenh.fr, tiltapi.ananas.space"
+        networks:
+            - web

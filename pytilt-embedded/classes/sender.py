@@ -21,10 +21,10 @@ class Sender(object):
         self.queue = []
         self.sending = []
         self.batch_size = batch_size
-        #self.url = os.environ.get('PYTILT_URL', None)
-        #self.key = os.environ.get('PYTILT_KEY', None)
-        self.key = '1234'
-        self.url = 'http://127.0.0.1:5000/{}'.format(endpoint)
+        self.url = "{}/{}".format(os.environ.get('PYTILT_URL', None), endpoint)
+        self.key = os.environ.get('PYTILT_KEY', None)
+        # self.key = '1234'
+        # self.url = 'http://127.0.0.1:5000/{}'.format(endpoint)
         print("sending to {} with key {}".format(self.url,self.key))
 
     def add_data(self, data):
