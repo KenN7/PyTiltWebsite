@@ -1,4 +1,4 @@
-FROM python:2.7-alpine
+FROM python:3.8-alpine
 MAINTAINER Ken H <docker@kenh.fr>
 
 # Add Tini
@@ -7,7 +7,7 @@ RUN apk add --update tini
 COPY . /app
 WORKDIR /app
 
-RUN pip install -r requirement.txt
+RUN pip install -r /app/requirement.txt
 
 EXPOSE 1234
 
