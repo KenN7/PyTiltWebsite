@@ -7,7 +7,7 @@ RUN apk add --update tini
 COPY . /app
 WORKDIR /app
 
-RUN pip install -r /app/requirement.txt
+RUN pip install -r requirements.txt
 
 EXPOSE 1234
 
