@@ -11,7 +11,7 @@ services:
         env_file:
             - .env
         volumes:
-            - ${DATA_ROOT_DIR:-/srv/data}:/var/lib/influxdb
+            - ${DATA_ROOT_DIR:-/srv/data}/tiltapi/influxdb:/var/lib/influxdb
 
     grafana:
         image: grafana/grafana:latest
@@ -19,7 +19,7 @@ services:
         ports:
             - "3000:3000"
         volumes:
-            - ${DATA_ROOT_DIR:-/srv/data}:/var/lib/grafana
+            - ${DATA_ROOT_DIR:-/srv/data}/tiltapi/grafana:/var/lib/grafana
         labels:
             traefik.enable: "true"
             traefik.port: "3000"

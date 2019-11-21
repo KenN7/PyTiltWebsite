@@ -3,6 +3,7 @@ MAINTAINER Ken H <docker@kenh.fr>
 
 # Add Tini
 RUN apk add --update tini
+RUN apk --no-cache add binutils musl-dev
 
 COPY . /app
 WORKDIR /app
