@@ -1,6 +1,4 @@
-#!/usr/bin/python
-from __future__ import absolute_import
-# from peewee import *
+#!/usr/bin/python3
 from marshmallow import Schema, fields, post_load, pre_dump, utils
 import datetime
 

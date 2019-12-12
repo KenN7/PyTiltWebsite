@@ -1,5 +1,4 @@
-#!/usr/bin/python
-from __future__ import absolute_import
+#!/usr/bin/python3
 from classes.classes import TiltBase, BubblerBase
 from random import randint
 import threading
