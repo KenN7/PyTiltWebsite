@@ -9,7 +9,7 @@ class BubblerRaspi(BubblerBase):
     def __init__(self, *args, **kwargs):
         super(BubblerRaspi, self).__init__(*args, **kwargs)
         self.bubbler = Button(self.pin, pull_up=True)
-        self.bubbler.when_pressed = self.DoBubble()
+        self.bubbler.when_pressed = self.DoBubble
 
 
 class TiltRaspi(TiltBase):
