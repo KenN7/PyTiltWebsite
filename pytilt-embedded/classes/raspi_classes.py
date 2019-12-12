@@ -13,7 +13,7 @@ class BubblerRaspi(BubblerBase):
 
 
 class TiltRaspi(TiltBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, sock, *args, **kwargs):
         super(TiltRaspi, self).__init__(*args, **kwargs)
 
     def get_data(self):
@@ -30,3 +30,4 @@ def init():
     blescan.hci_le_set_scan_parameters(sock)
     blescan.hci_enable_le_scan(sock)
     print("Started physical device..")
+    return sock

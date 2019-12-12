@@ -31,7 +31,7 @@ class BubblerSim(BubblerBase):
 
 
 class TiltSim(TiltBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, sock, *args, **kwargs):
         super(TiltSim, self).__init__(*args, **kwargs)
 
     def simulator(self):
@@ -46,3 +46,4 @@ class TiltSim(TiltBase):
 
 def init():
     print("Started Simulator device..")
+    return None

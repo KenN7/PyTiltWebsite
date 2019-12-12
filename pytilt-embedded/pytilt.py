@@ -14,9 +14,9 @@ else:
     from classes.sim_classes import TiltSim as Tilt
     from classes.sim_classes import init
 
-def monitor():
+def monitor(btsock):
     bubbler = Bubbler(14)
-    tilt = Tilt("Red")
+    tilt = Tilt("Red", btsock)
 
     while True:
         tilt.monitor()
@@ -25,5 +25,5 @@ def monitor():
 
 
 if __name__ == '__main__':
-    init()
-    monitor()
+    btsock = init()
+    monitor(btsock)
