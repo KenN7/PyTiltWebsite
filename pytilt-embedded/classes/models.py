@@ -59,6 +59,7 @@ class TiltSchema(Schema):
                     d["time"] = utils.from_iso(d["time"])
         elif type(data["time"]) is not datetime.datetime:
                 data["time"] = utils.from_iso(data["time"])
+        return data
 
 
 # class Bubbler(Model):
@@ -95,6 +96,7 @@ class BubblerSchema(Schema):
             data["starttime"] = utils.from_iso(data["starttime"])
         elif type(data["endtime"]) is not datetime.datetime:
             data["endtime"] = utils.from_iso(data["endtime"])
+        return data
 
 
 # def initdb():

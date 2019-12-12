@@ -69,4 +69,5 @@ class TiltBase(object):
                 print(beacon['uuid'],self.to_celsius(beacon['major']),beacon['minor'])
                 # m = models.Tilt(name=TILTS[beacon['uuid']], time=datetime.utcnow(), temp=self.to_celsius(beacon['major']), gravity=beacon['minor'])
                 m = dict(name=TILTS[beacon['uuid']], time=datetime.utcnow(), temp=self.to_celsius(beacon['major']), gravity=beacon['minor'])
+                print(self.schema.dump(m))
                 self.sender.add_data(self.schema.dump(m))
