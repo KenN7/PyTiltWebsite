@@ -9,7 +9,7 @@ import blescan # bluetooth get
 class BubblerRaspi(BubblerBase):
     def __init__(self, *args, **kwargs):
         super(BubblerRaspi, self).__init__(*args, **kwargs)
-        self.bubbler = Button(self.pin)
+        self.bubbler = Button(self.pin, pull_up=True)
         self.bubbler.when_pressed = self.DoBubble()
 
 
