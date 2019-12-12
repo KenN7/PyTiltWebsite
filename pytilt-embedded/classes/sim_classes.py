@@ -31,8 +31,8 @@ class BubblerSim(BubblerBase):
 
 
 class TiltSim(TiltBase):
-    def __init__(self, sock, *args, **kwargs):
-        super(TiltSim, self).__init__(*args, **kwargs)
+    def __init__(self, name, sock, *args, **kwargs):
+        super(TiltSim, self).__init__(name, *args, **kwargs)
 
     def simulator(self):
         g = randint(1000,1060)
