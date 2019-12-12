@@ -15,9 +15,10 @@ class BubblerRaspi(BubblerBase):
 class TiltRaspi(TiltBase):
     def __init__(self, sock, *args, **kwargs):
         super(TiltRaspi, self).__init__(*args, **kwargs)
+        self.sock = sock
 
     def get_data(self):
-        return self.distinct(blescan.parse_events(sock, 10))
+        return self.distinct(blescan.parse_events(self.sock, 10))
 
 def init():
     dev_id = 0
