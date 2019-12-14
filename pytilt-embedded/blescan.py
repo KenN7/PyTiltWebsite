@@ -99,7 +99,10 @@ def parse_events(sock, loop_count=100):
     sock.setsockopt(bluez.SOL_HCI, bluez.HCI_FILTER, flt)
     beacons = []
     for i in range(0, loop_count):
-        pkt = sock.recv(255)
+        try:
+            pkt = sock.recv(255)
+        except:
+            continue
         ptype, event, plen = struct.unpack('BBB', pkt[:3])
 
         if event == LE_META_EVENT:

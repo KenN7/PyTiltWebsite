@@ -22,7 +22,7 @@ class BubblerBase(object):
         self.firstbubble = datetime.utcnow()
         self.bubble = 0
 
-        self.sender = Sender('bubbler',2)
+        self.sender = Sender('bubbler',10)
         self.schema = models.BubblerSchema()
 
     def DoBubble(self):
@@ -44,7 +44,7 @@ class BubblerBase(object):
 class TiltBase(object):
     def __init__(self, name):
         self.name = name
-        self.sender = Sender('tilt',2)
+        self.sender = Sender('tilt',10)
         self.schema = models.TiltSchema()
 
     def distinct(self, objects):
