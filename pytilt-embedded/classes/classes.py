@@ -2,6 +2,7 @@
 import sys
 from datetime import datetime
 from classes.sender import Sender
+import time
 import classes.models as models
 
 TILTS = {
@@ -40,6 +41,11 @@ class BubblerBase(object):
             self.bubble = 0
             #print('put in q')
 
+    def loop(self):
+        while True: 
+            self.monitor()
+            time.sleep(10)
+
 
 class TiltBase(object):
     def __init__(self, name):
@@ -71,3 +77,8 @@ class TiltBase(object):
                 m = dict(name=TILTS[beacon['uuid']], time=datetime.utcnow(), temp=self.to_celsius(beacon['major']), gravity=beacon['minor'])
                 print(self.schema.dump(m))
                 self.sender.add_data(self.schema.dump(m))
+
+    def loop(self):
+        while True: 
+            self.monitor()
+            time.sleep(10)

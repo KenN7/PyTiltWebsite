@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import threading
 import time
 import os
         
@@ -18,10 +19,13 @@ def monitor(btsock):
     bubbler = Bubbler(14)
     tilt = Tilt("Red", btsock)
 
-    while True:
-        tilt.monitor()
-        bubbler.monitor()
-        time.sleep(10)
+    tilt_thread = threading.Thread(target=tilt.loop)
+    tilt_thread.start()
+    # tilt.monitor()
+    bubbler_thread = threading.Thread(target=bubbler.loop)
+    bubbler_thread.start() 
+    # bubbler.monitor()
+    # time.sleep(10)
 
 
 if __name__ == '__main__':
