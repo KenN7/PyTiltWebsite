@@ -43,8 +43,9 @@ class Sender(object):
     def completed(self, was_sent):
         if was_sent:
             self.sending = []
+            print('send success.')
         else:
-            print('send failed')
+            print('send failed.')
             if len(self.queue) > 100:
                 self.queue = []
             self.queue += self.sending
