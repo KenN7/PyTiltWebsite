@@ -44,7 +44,7 @@ class BubblerBase(object):
     def loop(self):
         while True: 
             self.monitor()
-            time.sleep(10)
+            time.sleep(60)
 
 
 class TiltBase(object):
@@ -81,4 +81,4 @@ class TiltBase(object):
     def loop(self):
         while True: 
             self.monitor()
-            time.sleep(10)
+            time.sleep(60)
