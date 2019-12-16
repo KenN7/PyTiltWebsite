@@ -2,6 +2,8 @@
 import threading
 import time
 import os
+
+TIMELOOP = 60
         
 SIM = os.environ.get('PYTILT_SIMULATE', None)
 if SIM == "FALSE":
@@ -19,13 +21,12 @@ def monitor(btsock):
     bubbler = Bubbler(14)
     tilt = Tilt("Red", btsock)
 
-    tilt_thread = threading.Thread(target=tilt.loop)
+    tilt_thread = threading.Thread(target=tilt.loop, args=(TIMELOOP,))
     tilt_thread.start()
     # tilt.monitor()
-    bubbler_thread = threading.Thread(target=bubbler.loop)
+    bubbler_thread = threading.Thread(target=bubbler.loop, args=(TIMELOOP,))
     bubbler_thread.start() 
     # bubbler.monitor()
-    # time.sleep(10)
 
 
 if __name__ == '__main__':

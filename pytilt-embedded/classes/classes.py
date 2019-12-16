@@ -41,10 +41,10 @@ class BubblerBase(object):
             self.bubble = 0
             #print('put in q')
 
-    def loop(self):
+    def loop(self, looptime):
         while True: 
             self.monitor()
-            time.sleep(60)
+            time.sleep(looptime)
 
 
 class TiltBase(object):
@@ -78,7 +78,7 @@ class TiltBase(object):
                 print(self.schema.dump(m))
                 self.sender.add_data(self.schema.dump(m))
 
-    def loop(self):
+    def loop(self, looptime):
         while True: 
             self.monitor()
-            time.sleep(60)
+            time.sleep(looptime)

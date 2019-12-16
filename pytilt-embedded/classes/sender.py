@@ -9,8 +9,11 @@ def send(data, url, key):
     print('send ', data)
     try:
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain', 'X-PYTILT-KEY': key}
-        r = requests.post(url, data=json.dumps(data), headers=headers)
+        r = requests.post(url, data=json.dumps(data), headers=headers, timeout=15)
         return r.status_code == 200
+    except requests.exceptions.Timeout:
+        print('Connection Timeout.')
+        return False
     except requests.exceptions.RequestException:
         return False
 
