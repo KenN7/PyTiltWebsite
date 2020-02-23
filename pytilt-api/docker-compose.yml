@@ -16,14 +16,16 @@ services:
     grafana:
         image: grafana/grafana:latest
         restart: unless-stopped
-        ports:
-            - "3000:3000"
+        # ports:
+            # - "3000:3000"
         volumes:
             - ${DATA_ROOT_DIR:-/srv/data}/tiltapi/grafana:/var/lib/grafana
         labels:
-            traefik.enable: "true"
-            traefik.port: "3000"
-            traefik.frontend.rule: "Host: grafana.kenh.fr, grafana.ananas.space"
+            - "traefik.enable=true"
+            - "traefik.http.routers.grafana.rule=Host(`grafana.kenh.fr`,`grafana.ananas.space`)"
+            - "traefik.http.routers.grafana.tls.certresolver=lets"
+            - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+            - "traefik.http.routers.grafana.entrypoints=websecure"
         networks:
             - web
             - default
@@ -31,14 +33,16 @@ services:
     api:
         build: .
         restart: unless-stopped
-        ports:
-            - "1234:1234"
+        # ports:
+            # - "1234:1234"
         env_file:
             - .env
         labels:
-            traefik.enable: "true"
-            traefik.port: "1234"
-            traefik.frontend.rule: "Host: tiltapi.kenh.fr, tiltapi.ananas.space"
+            - "traefik.enable=true"
+            - "traefik.http.routers.tiltapi.rule=Host(`tiltapi.kenh.fr`,`tiltapi.ananas.space`)"
+            - "traefik.http.routers.tiltapi.tls.certresolver=lets"
+            - "traefik.http.services.tiltapi.loadbalancer.server.port=1234"
+            - "traefik.http.routers.tiltapi.entrypoints=websecure"
         networks:
             - web
             - default
