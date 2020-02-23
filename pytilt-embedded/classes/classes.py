@@ -1,9 +1,8 @@
-#!/usr/bin/python
-from __future__ import print_function
-from __future__ import absolute_import
+#!/usr/bin/python3
 import sys
 from datetime import datetime
 from classes.sender import Sender
+import time
 import classes.models as models
 
 TILTS = {
@@ -24,7 +23,7 @@ class BubblerBase(object):
         self.firstbubble = datetime.utcnow()
         self.bubble = 0
 
-        self.sender = Sender('bubbler',2)
+        self.sender = Sender('bubbler',10)
         self.schema = models.BubblerSchema()
 
     def DoBubble(self):
@@ -38,15 +37,20 @@ class BubblerBase(object):
         if ( self.bubble > 0 ):
             # m = models.Bubbler(name="0", starttime=self.firstbubble, endtime=datetime.utcnow(), bubbles=self.bubble)
             m = dict(name="0", starttime=self.firstbubble, endtime=datetime.utcnow(), bubbles=self.bubble)
-            self.sender.add_data(self.schema.dump(m).data)
+            self.sender.add_data(self.schema.dump(m))
             self.bubble = 0
             #print('put in q')
+
+    def loop(self, looptime):
+        while True: 
+            self.monitor()
+            time.sleep(looptime)
 
 
 class TiltBase(object):
     def __init__(self, name):
         self.name = name
-        self.sender = Sender('tilt',2)
+        self.sender = Sender('tilt',10)
         self.schema = models.TiltSchema()
 
     def distinct(self, objects):
@@ -71,4 +75,10 @@ class TiltBase(object):
                 print(beacon['uuid'],self.to_celsius(beacon['major']),beacon['minor'])
                 # m = models.Tilt(name=TILTS[beacon['uuid']], time=datetime.utcnow(), temp=self.to_celsius(beacon['major']), gravity=beacon['minor'])
                 m = dict(name=TILTS[beacon['uuid']], time=datetime.utcnow(), temp=self.to_celsius(beacon['major']), gravity=beacon['minor'])
-                self.sender.add_data(self.schema.dump(m).data)
+                print(self.schema.dump(m))
+                self.sender.add_data(self.schema.dump(m))
+
+    def loop(self, looptime):
+        while True: 
+            self.monitor()
+            time.sleep(looptime)

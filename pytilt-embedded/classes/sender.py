@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
 import requests
 import json
 from multiprocessing import Pool
@@ -10,8 +9,11 @@ def send(data, url, key):
     print('send ', data)
     try:
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain', 'X-PYTILT-KEY': key}
-        r = requests.post(url, data=json.dumps(data), headers=headers)
+        r = requests.post(url, data=json.dumps(data), headers=headers, timeout=15)
         return r.status_code == 200
+    except requests.exceptions.Timeout:
+        print('Connection Timeout.')
+        return False
     except requests.exceptions.RequestException:
         return False
 
@@ -44,8 +46,9 @@ class Sender(object):
     def completed(self, was_sent):
         if was_sent:
             self.sending = []
+            print('send success.')
         else:
-            print('send failed')
+            print('send failed.')
             if len(self.queue) > 100:
                 self.queue = []
             self.queue += self.sending

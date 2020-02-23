@@ -4,12 +4,13 @@ After=multi-user.target
 
 [Service]
 Type=idle
+Environment=PYTILT_SIMULATE=FALSE
 Environment=PYTILT_URL=https://tiltapi.ananas.space
 Environment=PYTILT_KEY=MYSECRETKEY456((()))
 ## ExecStart=/usr/bin/python /home/pi/pytilt/pytilt.py > /home/pi/pytilt.log 2>&1
-ExecStart=/usr/bin/python2 -u /home/pi/pytilt/pytilt-embedded/pytilt.py
+ExecStart=/usr/bin/python3 -u /home/pi/PyTiltWebsite/pytilt-embedded/pytilt.py
 User=pi
-WorkingDirectory=/home/pi/pytilt/pytilt-embedded/
+WorkingDirectory=/home/pi/PyTiltWebsite/pytilt-embedded/
 
 [Install]
 WantedBy=multi-user.target

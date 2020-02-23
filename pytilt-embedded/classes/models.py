@@ -1,6 +1,4 @@
-#!/usr/bin/python
-from __future__ import absolute_import
-# from peewee import *
+#!/usr/bin/python3
 from marshmallow import Schema, fields, post_load, pre_dump, utils
 import datetime
 
@@ -61,6 +59,7 @@ class TiltSchema(Schema):
                     d["time"] = utils.from_iso(d["time"])
         elif type(data["time"]) is not datetime.datetime:
                 data["time"] = utils.from_iso(data["time"])
+        return data
 
 
 # class Bubbler(Model):
@@ -97,6 +96,7 @@ class BubblerSchema(Schema):
             data["starttime"] = utils.from_iso(data["starttime"])
         elif type(data["endtime"]) is not datetime.datetime:
             data["endtime"] = utils.from_iso(data["endtime"])
+        return data
 
 
 # def initdb():
