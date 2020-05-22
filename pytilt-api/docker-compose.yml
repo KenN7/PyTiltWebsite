@@ -6,7 +6,7 @@ networks:
 
 services:
     influxdb:
-        image: influxdb:1.7-alpine
+        image: influxdb:1.8-alpine
         restart: unless-stopped
         env_file:
             - .env
@@ -23,9 +23,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.grafana.rule=Host(`grafana.kenh.fr`,`grafana.ananas.space`)"
-            - "traefik.http.routers.grafana.tls.certresolver=lets"
             - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-            - "traefik.http.routers.grafana.entrypoints=websecure"
         networks:
             - web
             - default
@@ -40,9 +38,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.tiltapi.rule=Host(`tiltapi.kenh.fr`,`tiltapi.ananas.space`)"
-            - "traefik.http.routers.tiltapi.tls.certresolver=lets"
             - "traefik.http.services.tiltapi.loadbalancer.server.port=1234"
-            - "traefik.http.routers.tiltapi.entrypoints=websecure"
         networks:
             - web
             - default
